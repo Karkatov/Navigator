@@ -17,6 +17,11 @@ extension ViewController {
         locationButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
         locationButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50).isActive = true
         
+        transportTypeButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        transportTypeButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        transportTypeButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
+        transportTypeButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 100).isActive = true
+        
         goButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
         goButton.heightAnchor.constraint(equalToConstant: 100).isActive = true
         goButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -27,18 +32,19 @@ extension ViewController {
         mapKindButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30).isActive = true
         mapKindButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50).isActive = true
         
-        infoStackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30).isActive = true
-        infoStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100).isActive = true
-        infoStackView.widthAnchor.constraint(equalToConstant: 200).isActive = true
-        infoStackView.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        remainedDistanceAndTimeStackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30).isActive = true
+        remainedDistanceAndTimeStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100).isActive = true
+        remainedDistanceAndTimeStackView.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        remainedDistanceAndTimeStackView.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
-        infoStackView1.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30).isActive = true
-        infoStackView1.topAnchor.constraint(equalTo: view.topAnchor, constant: 170).isActive = true
-        infoStackView1.widthAnchor.constraint(equalToConstant: 200).isActive = true
-        infoStackView1.heightAnchor.constraint(equalToConstant: 150).isActive = true
+        directionLabelStackView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30).isActive = true
+        directionLabelStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 170).isActive = true
+        directionLabelStackView.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        directionLabelStackView.heightAnchor.constraint(equalToConstant: 150).isActive = true
         
         goButton.layer.cornerRadius = goButton.frame.height/2
         locationButton.layer.cornerRadius = locationButton.frame.height/2
         mapKindButton.layer.cornerRadius = mapKindButton.frame.height/2
+        transportTypeButton.layer.cornerRadius = transportTypeButton.frame.height/2
     }
 }

@@ -7,9 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		843E6F0F279884AE00073FBD /* TransportTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843E6F0E279884AE00073FBD /* TransportTypeViewController.swift */; };
 		84B3BCC927981ABD003CDDD8 /* ConfigureLocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B3BCC827981ABD003CDDD8 /* ConfigureLocationManager.swift */; };
 		84B3BCCB27981AD7003CDDD8 /* ConfigureSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B3BCCA27981AD7003CDDD8 /* ConfigureSearch.swift */; };
-		84B3BCCD27981AEA003CDDD8 /* ConfigureStartLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B3BCCC27981AEA003CDDD8 /* ConfigureStartLocation.swift */; };
+		84B3BCCD27981AEA003CDDD8 /* ConfigureCenterToLocationFunc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B3BCCC27981AEA003CDDD8 /* ConfigureCenterToLocationFunc.swift */; };
 		84B3BCCF27981B05003CDDD8 /* SetConstraints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B3BCCE27981B05003CDDD8 /* SetConstraints.swift */; };
 		84B3BCD227981B31003CDDD8 /* Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B3BCD127981B31003CDDD8 /* Presenter.swift */; };
 		84B3BCD427981B4D003CDDD8 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B3BCD327981B4D003CDDD8 /* Entity.swift */; };
@@ -24,14 +25,15 @@
 		84C11C12279819D800907008 /* Navigator.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 84C11C10279819D800907008 /* Navigator.xcdatamodeld */; };
 		84C11C14279819D900907008 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 84C11C13279819D900907008 /* Assets.xcassets */; };
 		84C11C17279819DA00907008 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 84C11C15279819DA00907008 /* LaunchScreen.storyboard */; };
-		84C11C1F27981A7E00907008 /* ChooseMapStyleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C11C1E27981A7E00907008 /* ChooseMapStyleViewController.swift */; };
+		84C11C1F27981A7E00907008 /* MapStyleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C11C1E27981A7E00907008 /* MapStyleViewController.swift */; };
 		84C11C2127981A9B00907008 /* ConfigureGesturePolitics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C11C2027981A9B00907008 /* ConfigureGesturePolitics.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		843E6F0E279884AE00073FBD /* TransportTypeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransportTypeViewController.swift; sourceTree = "<group>"; };
 		84B3BCC827981ABD003CDDD8 /* ConfigureLocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureLocationManager.swift; sourceTree = "<group>"; };
 		84B3BCCA27981AD7003CDDD8 /* ConfigureSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureSearch.swift; sourceTree = "<group>"; };
-		84B3BCCC27981AEA003CDDD8 /* ConfigureStartLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureStartLocation.swift; sourceTree = "<group>"; };
+		84B3BCCC27981AEA003CDDD8 /* ConfigureCenterToLocationFunc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureCenterToLocationFunc.swift; sourceTree = "<group>"; };
 		84B3BCCE27981B05003CDDD8 /* SetConstraints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetConstraints.swift; sourceTree = "<group>"; };
 		84B3BCD127981B31003CDDD8 /* Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenter.swift; sourceTree = "<group>"; };
 		84B3BCD327981B4D003CDDD8 /* Entity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
@@ -48,7 +50,7 @@
 		84C11C13279819D900907008 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		84C11C16279819DA00907008 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		84C11C18279819DA00907008 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		84C11C1E27981A7E00907008 /* ChooseMapStyleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChooseMapStyleViewController.swift; sourceTree = "<group>"; };
+		84C11C1E27981A7E00907008 /* MapStyleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapStyleViewController.swift; sourceTree = "<group>"; };
 		84C11C2027981A9B00907008 /* ConfigureGesturePolitics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureGesturePolitics.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -68,11 +70,12 @@
 			isa = PBXGroup;
 			children = (
 				84C11C0B279819D800907008 /* ViewController.swift */,
-				84C11C1E27981A7E00907008 /* ChooseMapStyleViewController.swift */,
+				84C11C1E27981A7E00907008 /* MapStyleViewController.swift */,
+				843E6F0E279884AE00073FBD /* TransportTypeViewController.swift */,
 				84C11C2027981A9B00907008 /* ConfigureGesturePolitics.swift */,
 				84B3BCC827981ABD003CDDD8 /* ConfigureLocationManager.swift */,
 				84B3BCCA27981AD7003CDDD8 /* ConfigureSearch.swift */,
-				84B3BCCC27981AEA003CDDD8 /* ConfigureStartLocation.swift */,
+				84B3BCCC27981AEA003CDDD8 /* ConfigureCenterToLocationFunc.swift */,
 				84B3BCCE27981B05003CDDD8 /* SetConstraints.swift */,
 			);
 			path = View;
@@ -201,11 +204,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				843E6F0F279884AE00073FBD /* TransportTypeViewController.swift in Sources */,
 				84B3BCCB27981AD7003CDDD8 /* ConfigureSearch.swift in Sources */,
 				84B3BCD227981B31003CDDD8 /* Presenter.swift in Sources */,
 				84C11C0C279819D800907008 /* ViewController.swift in Sources */,
 				84C11C12279819D800907008 /* Navigator.xcdatamodeld in Sources */,
-				84C11C1F27981A7E00907008 /* ChooseMapStyleViewController.swift in Sources */,
+				84C11C1F27981A7E00907008 /* MapStyleViewController.swift in Sources */,
 				84B3BCD827981B77003CDDD8 /* Interacor.swift in Sources */,
 				84B3BCC927981ABD003CDDD8 /* ConfigureLocationManager.swift in Sources */,
 				84C11C08279819D800907008 /* AppDelegate.swift in Sources */,
@@ -215,7 +219,7 @@
 				84B3BCDC27981B98003CDDD8 /* StoreService.swift in Sources */,
 				84B3BCCF27981B05003CDDD8 /* SetConstraints.swift in Sources */,
 				84C11C2127981A9B00907008 /* ConfigureGesturePolitics.swift in Sources */,
-				84B3BCCD27981AEA003CDDD8 /* ConfigureStartLocation.swift in Sources */,
+				84B3BCCD27981AEA003CDDD8 /* ConfigureCenterToLocationFunc.swift in Sources */,
 				84B3BCD627981B5A003CDDD8 /* Router.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

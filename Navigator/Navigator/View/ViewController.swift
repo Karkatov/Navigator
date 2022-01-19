@@ -17,7 +17,8 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
     var synthesizer = AVSpeechSynthesizer()
     var steps: [MKRoute.Step] = []
     var shortestPath: MKRoute? 
-    var status = false 
+    var ridingStatus = false
+    var transportType: MKDirectionsTransportType = .automobile
     
     let loading: UIActivityIndicatorView = {
         let loading = UIActivityIndicatorView()
@@ -42,7 +43,7 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
         lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
     }()
-    let infoStackView: UIStackView = {
+    let remainedDistanceAndTimeStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
         stack.distribution = .fillEqually
@@ -58,7 +59,7 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
         lbl.backgroundColor = .white.withAlphaComponent(0.5)
         return lbl
     }()
-    let infoStackView1: UIStackView = {
+    let directionLabelStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
         stack.distribution = .fillEqually
@@ -90,6 +91,16 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
         btn.backgroundColor = .white
         btn.alpha = 0.5
         btn.setImage(UIImage(systemName: "eye"),
+                     for: .normal)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        return btn
+    }()
+    
+    let transportTypeButton: UIButton = {
+        let btn = UIButton()
+        btn.backgroundColor = .white
+        btn.alpha = 0.5
+        btn.setImage(UIImage(systemName: "car.fill"),
                      for: .normal)
         btn.translatesAutoresizingMaskIntoConstraints = false
         return btn
@@ -129,20 +140,22 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setGesturePolitics()
-        setGesturePolitics1()
-        setGesturePolitics2()
+        setGestureMapKindButtonPolitics()
+        setGestureGoButtonPolitics()
+        setGestureLocationButtonPolitics()
+        setGestureTransportTypeButtonPolitics()
         view.addSubview(mapView)
         view.addSubview(loading)
         view.addSubview(searchField)
         view.addSubview(locationButton)
         view.addSubview(mapKindButton)
         view.addSubview(goButton)
-        infoStackView.addArrangedSubview(remainedDistance)
-        infoStackView.addArrangedSubview(remainedTime)
-        infoStackView1.addArrangedSubview(directionLabel)
-        view.addSubview(infoStackView)
-        view.addSubview(infoStackView1)
+        view.addSubview(transportTypeButton)
+        remainedDistanceAndTimeStackView.addArrangedSubview(remainedDistance)
+        remainedDistanceAndTimeStackView.addArrangedSubview(remainedTime)
+        directionLabelStackView.addArrangedSubview(directionLabel)
+        view.addSubview(remainedDistanceAndTimeStackView)
+        view.addSubview(directionLabelStackView)
         mapView.delegate = self
         searchField.delegate = self
         locationManager.delegate = self

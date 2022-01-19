@@ -5,13 +5,13 @@ import AVFoundation
 
 
 extension ViewController {
-    func setGesturePolitics() {
+    func setGestureLocationButtonPolitics() {
         let gesture = UILongPressGestureRecognizer(target: self,
-                                                   action: #selector(tap))
+                                                   action: #selector(tapLocation))
         locationButton.addGestureRecognizer(gesture)
         gesture.minimumPressDuration = 0
     }
-    @objc private func tap(gesture: UILongPressGestureRecognizer) {
+    @objc private func tapLocation(gesture: UILongPressGestureRecognizer) {
         if gesture.state == .began {
             locationButton.alpha = 1.0
             let userLocation = mapView.userLocation.coordinate
@@ -20,16 +20,16 @@ extension ViewController {
             locationButton.alpha = 0.5
         }
     }
-    func setGesturePolitics1() {
+    func setGestureMapKindButtonPolitics() {
         let gesture = UILongPressGestureRecognizer(target: self,
-                                                   action: #selector(tap1))
+                                                   action: #selector(tapMapKind))
         mapKindButton.addGestureRecognizer(gesture)
         gesture.minimumPressDuration = 0
     }
-    @objc private func tap1(gesture: UILongPressGestureRecognizer) {
+    @objc private func tapMapKind(gesture: UILongPressGestureRecognizer) {
         if gesture.state == .began {
             mapKindButton.alpha = 1.0
-            let chooseVC = ChooseMapStyleViewController()
+            let chooseVC = MapStyleViewController()
             chooseVC.completion = { [weak self] style in
                 guard
                     let unwrappedStyle = style else { return }
@@ -44,48 +44,60 @@ extension ViewController {
             mapKindButton.alpha = 0.5
         }
     }
-    func setGesturePolitics2() {
+    func setGestureGoButtonPolitics() {
         let gesture = UILongPressGestureRecognizer(target: self,
-                                                   action: #selector(tap2))
+                                                   action: #selector(tapGo))
         goButton.addGestureRecognizer(gesture)
         gesture.minimumPressDuration = 0
     }
-    @objc private func tap2(gesture: UILongPressGestureRecognizer) {
+    @objc private func tapGo(gesture: UILongPressGestureRecognizer) {
         if gesture.state == .began {
             goButton.backgroundColor = .red.withAlphaComponent(1.0)
             
-            if status == false {
+            if ridingStatus == false {
                 if let unwrapped = shortestPath {
                     goButton.setTitle("Стоп", for: .normal)
                     getRouteSteps(route: unwrapped)
-                    status = true
+                    ridingStatus = true
                 }
             } else {
                 goButton.setTitle("В путь", for: .normal)
-                UIView.animate(withDuration: 2.0,
-                               animations: { [weak self] in
-                    self?.directionLabel.isHidden = true
-                    self?.remainedTime.isHidden = true
-                    self?.remainedDistance.isHidden = true
-                    self?.goButton.isHidden = true 
-                })
-                stepCounter = 0
-                _ = locationManager.monitoredRegions.map{
-                    locationManager.stopMonitoring(for: $0)
-                }
-                clean()
-                let location = mapView.userLocation.coordinate
-                mapView.centerToLocation(center: location)
-                steps.removeAll()
-                status = false
-                if synthesizer.isSpeaking {
-                    synthesizer.stopSpeaking(at: AVSpeechBoundary.word)
-                }
-                shortestPath = nil
+                superClean()
             }
-            
         } else {
             goButton.backgroundColor = .red.withAlphaComponent(0.5)
+        }
+    }
+    
+    func setGestureTransportTypeButtonPolitics() {
+        let gesture = UILongPressGestureRecognizer(target: self,
+                                                   action: #selector(tapTransportType))
+        transportTypeButton.addGestureRecognizer(gesture)
+        gesture.minimumPressDuration = 0
+    }
+    @objc private func tapTransportType(gesture: UILongPressGestureRecognizer) {
+        if gesture.state == .began {
+            transportTypeButton.alpha = 1.0
+            let chooseTransportTypeVC = TransportTypeViewController()
+            chooseTransportTypeVC.completion = { [weak self] type in
+                guard
+                    let unwrappedTransportType = type else { return }
+                self?.transportType = unwrappedTransportType
+                if unwrappedTransportType == .walking {
+                    self?.transportTypeButton.setImage(UIImage(systemName: "figure.walk"),
+                                                       for: .normal)
+                } else {
+                    self?.transportTypeButton.setImage(UIImage(systemName: "car.fill"),
+                                                       for: .normal)
+                }
+            }
+            chooseTransportTypeVC.modalTransitionStyle = .crossDissolve
+            chooseTransportTypeVC.modalPresentationStyle = .overCurrentContext
+            present(chooseTransportTypeVC,
+                    animated: true,
+                    completion: nil)
+        } else {
+            transportTypeButton.alpha = 0.5
         }
     }
 }

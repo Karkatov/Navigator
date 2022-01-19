@@ -1,7 +1,7 @@
 import UIKit
 import MapKit
 
-final class ChooseMapStyleViewController: UIViewController {
+final class MapStyleViewController: UIViewController {
     
     public var completion: (((MKMapType)?) -> Void)?
     
@@ -27,7 +27,7 @@ final class ChooseMapStyleViewController: UIViewController {
     }()
     @objc private func setHybridStyle(){
         completion?(MKMapType.hybrid)
-        dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     private let hybridFlyoverButton: UIButton = {
         let btn = UIButton()
@@ -39,7 +39,7 @@ final class ChooseMapStyleViewController: UIViewController {
     }()
     @objc private func setHybridFlyOverStyle(){
         completion?(MKMapType.hybridFlyover)
-        dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     private let mutedStandardButton: UIButton = {
         let btn = UIButton()
