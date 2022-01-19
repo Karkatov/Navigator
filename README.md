@@ -1,2 +1,2 @@
 # Navigator
-A sample custom navigator with all main opportunities of popular ones 
+A sample custom car navigator with all main opportunities of popular ones 
