@@ -68,6 +68,7 @@ extension ViewController {
             
             let annotation = MKPointAnnotation()
             annotation.coordinate = location.coordinate
+            self?.destinationLocation = location.coordinate
             annotation.title = placemarks.first?.name
             annotation.subtitle = placemarks.first?.country
             self?.mapView.addAnnotation(annotation)

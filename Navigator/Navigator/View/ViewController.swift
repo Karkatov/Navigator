@@ -19,6 +19,7 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
     var shortestPath: MKRoute? 
     var ridingStatus = false
     var transportType: MKDirectionsTransportType = .automobile
+    var destinationLocation = CLLocationCoordinate2D() 
     
     let loading: UIActivityIndicatorView = {
         let loading = UIActivityIndicatorView()
@@ -80,7 +81,7 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
         let search = UISearchBar()
         search.placeholder = "Search for..."
         search.translatesAutoresizingMaskIntoConstraints = false
-        search.tintColor = .label
+        search.tintColor = .white
         search.showsCancelButton = true
         search.searchBarStyle = .minimal
         return search
