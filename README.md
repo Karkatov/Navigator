@@ -1,4 +1,5 @@
 # Navigator
 A sample custom navigator with all main opportunities of popular ones 
-![MyCollages](https://user-images.githubusercontent.com/88098218/150209902-8f656a8f-8693-4b61-bf6b-23abb1ba5b05.jpg)
+![MyCollages](https://user-images.githubusercontent.com/88098218/150585022-508657c8-1819-4e40-b260-282ea99acac9.jpg)
+
 
