@@ -2,6 +2,7 @@ import Foundation
 
 
 extension ViewController {
+    
     func setConstraints() {
         
         mapView.frame = view.bounds
@@ -21,6 +22,11 @@ extension ViewController {
         transportTypeButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         transportTypeButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
         transportTypeButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 100).isActive = true
+        
+        subwayButton.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        subwayButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        subwayButton.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
+        subwayButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 170).isActive = true
         
         goButton.widthAnchor.constraint(equalToConstant: 100).isActive = true
         goButton.heightAnchor.constraint(equalToConstant: 100).isActive = true
@@ -42,9 +48,20 @@ extension ViewController {
         directionLabelStackView.widthAnchor.constraint(equalToConstant: 200).isActive = true
         directionLabelStackView.heightAnchor.constraint(equalToConstant: 150).isActive = true
         
+        currentCoordinatesLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 30).isActive = true
+        currentCoordinatesLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -150).isActive = true
+        currentCoordinatesLabel.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        currentCoordinatesLabel.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        
+        currentSpeedLabel.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        currentSpeedLabel.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        currentSpeedLabel.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -30).isActive = true
+        currentSpeedLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -150).isActive = true
+        
         goButton.layer.cornerRadius = goButton.frame.height/2
         locationButton.layer.cornerRadius = locationButton.frame.height/2
         mapKindButton.layer.cornerRadius = mapKindButton.frame.height/2
         transportTypeButton.layer.cornerRadius = transportTypeButton.frame.height/2
+        subwayButton.layer.cornerRadius = transportTypeButton.frame.height/2
     }
 }

@@ -11,15 +11,45 @@ protocol UserView {
 }
 
 final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLocationManagerDelegate, UISearchBarDelegate {
-    
+        
     var presenter: UserPresenter?
-    var stepCounter = 0
+    var stepCounter = 0 
     var synthesizer = AVSpeechSynthesizer()
     var steps: [MKRoute.Step] = []
-    var shortestPath: MKRoute? 
-    var ridingStatus = false
+    var shortestPath: MKRoute?
     var transportType: MKDirectionsTransportType = .automobile
-    var destinationLocation = CLLocationCoordinate2D() 
+    var destinationLocation = CLLocationCoordinate2D()
+    var ridingStatus = false {
+        didSet {
+            goButton.setTitle(ridingStatus ? "Стоп" : "В путь",
+                              for: .normal)
+            ridingStatus ? (UIApplication.shared.isIdleTimerDisabled = true) : (UIApplication.shared.isIdleTimerDisabled = false)
+        }
+    }
+    
+    let currentCoordinatesLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.text = "Start monitoring..."
+        lbl.backgroundColor = .clear
+        lbl.textColor = .white.withAlphaComponent(0.5)
+        lbl.numberOfLines = 0
+        lbl.font = .systemFont(ofSize: 15, weight: .bold)
+        lbl.adjustsFontSizeToFitWidth = true
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        return lbl
+    }()
+    
+    let currentSpeedLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.text = "0 км/ч"
+        lbl.backgroundColor = .clear
+        lbl.textColor = .white.withAlphaComponent(0.5)
+        lbl.numberOfLines = 1
+        lbl.font = .systemFont(ofSize: 80, weight: .light)
+        lbl.adjustsFontSizeToFitWidth = true
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        return lbl
+    }()
     
     let loading: UIActivityIndicatorView = {
         let loading = UIActivityIndicatorView()
@@ -36,6 +66,7 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
         lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
     }()
+    
     let remainedDistance: UILabel = {
         let lbl = UILabel()
         lbl.textColor = .label
@@ -44,6 +75,7 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
         lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
     }()
+    
     let remainedDistanceAndTimeStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
@@ -52,6 +84,7 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
+    
     let directionLabel: UILabel = {
         let lbl = UILabel()
         lbl.textColor = .label
@@ -60,6 +93,7 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
         lbl.backgroundColor = .white.withAlphaComponent(0.5)
         return lbl
     }()
+    
     let directionLabelStackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
@@ -68,12 +102,13 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
+    
     let goButton: UIButton = {
         let btn = UIButton()
+        btn.backgroundColor = .red.withAlphaComponent(0.5)
+        btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setTitle("В путь",
                      for: .normal)
-        btn.backgroundColor = .red.withAlphaComponent(0.5)
-        btn.translatesAutoresizingMaskIntoConstraints = false 
         return btn
     }()
     
@@ -91,7 +126,7 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
         let btn = UIButton()
         btn.backgroundColor = .white
         btn.alpha = 0.5
-        btn.setImage(UIImage(systemName: "eye"),
+        btn.setImage(UIImage(systemName: "map.fill"),
                      for: .normal)
         btn.translatesAutoresizingMaskIntoConstraints = false
         return btn
@@ -107,10 +142,20 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
         return btn
     }()
     
+    let subwayButton: UIButton = {
+        let btn = UIButton()
+        btn.backgroundColor = .white
+        btn.alpha = 0.5
+        btn.setImage(UIImage(systemName: "tram.fill.tunnel"),
+                     for: .normal)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        return btn
+    }()
+    
     let locationManager: CLLocationManager = {
         let loc = CLLocationManager()
-        loc.desiredAccuracy = 1.0
-        loc.distanceFilter = 10
+        loc.desiredAccuracy = kCLLocationAccuracyBestForNavigation        
+        loc.startUpdatingLocation()
         return loc
     }()
     
@@ -129,7 +174,7 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
         let btn = UIButton()
         btn.backgroundColor = .white
         btn.alpha = 0.5
-        btn.setImage(UIImage(systemName: "location.fill"),
+        btn.setImage(UIImage(systemName: "location.north.fill"),
                      for: .normal)
         btn.translatesAutoresizingMaskIntoConstraints = false
         return btn
@@ -145,6 +190,7 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
         setGestureGoButtonPolitics()
         setGestureLocationButtonPolitics()
         setGestureTransportTypeButtonPolitics()
+        setGestureSubwayButtonPolitics()
         view.addSubview(mapView)
         view.addSubview(loading)
         view.addSubview(searchField)
@@ -152,6 +198,9 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
         view.addSubview(mapKindButton)
         view.addSubview(goButton)
         view.addSubview(transportTypeButton)
+        view.addSubview(subwayButton)
+        view.addSubview(currentCoordinatesLabel)
+        view.addSubview(currentSpeedLabel)
         remainedDistanceAndTimeStackView.addArrangedSubview(remainedDistance)
         remainedDistanceAndTimeStackView.addArrangedSubview(remainedTime)
         directionLabelStackView.addArrangedSubview(directionLabel)
@@ -168,6 +217,7 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
         directionLabel.isHidden = true
         goButton.isHidden = true
     }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.navigationController?.navigationBar.isHidden = true

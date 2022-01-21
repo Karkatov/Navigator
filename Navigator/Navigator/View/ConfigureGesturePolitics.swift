@@ -5,14 +5,23 @@ import AVFoundation
 
 
 extension ViewController {
+    
+    func vibrateWhenButtonTapped() {
+        let feedbackGenerator = UIImpactFeedbackGenerator(style: .light)
+        feedbackGenerator.impactOccurred()
+    }
+    
     func setGestureLocationButtonPolitics() {
         let gesture = UILongPressGestureRecognizer(target: self,
                                                    action: #selector(tapLocation))
         locationButton.addGestureRecognizer(gesture)
         gesture.minimumPressDuration = 0
     }
+    
     @objc private func tapLocation(gesture: UILongPressGestureRecognizer) {
+        
         if gesture.state == .began {
+            vibrateWhenButtonTapped()
             locationButton.alpha = 1.0
             let userLocation = mapView.userLocation.coordinate
             mapView.centerToLocation(center: userLocation)
@@ -20,14 +29,18 @@ extension ViewController {
             locationButton.alpha = 0.5
         }
     }
+    
     func setGestureMapKindButtonPolitics() {
         let gesture = UILongPressGestureRecognizer(target: self,
                                                    action: #selector(tapMapKind))
         mapKindButton.addGestureRecognizer(gesture)
         gesture.minimumPressDuration = 0
     }
+    
     @objc private func tapMapKind(gesture: UILongPressGestureRecognizer) {
+        
         if gesture.state == .began {
+            vibrateWhenButtonTapped()
             mapKindButton.alpha = 1.0
             let chooseVC = MapStyleViewController()
             chooseVC.completion = { [weak self] style in
@@ -44,24 +57,26 @@ extension ViewController {
             mapKindButton.alpha = 0.5
         }
     }
+    
     func setGestureGoButtonPolitics() {
         let gesture = UILongPressGestureRecognizer(target: self,
                                                    action: #selector(tapGo))
         goButton.addGestureRecognizer(gesture)
         gesture.minimumPressDuration = 0
     }
+    
     @objc private func tapGo(gesture: UILongPressGestureRecognizer) {
+
         if gesture.state == .began {
+            vibrateWhenButtonTapped()
             goButton.backgroundColor = .red.withAlphaComponent(1.0)
             
             if ridingStatus == false {
                 if let unwrapped = shortestPath {
-                    goButton.setTitle("Стоп", for: .normal)
                     getRouteSteps(route: unwrapped)
                     ridingStatus = true
                 }
             } else {
-                goButton.setTitle("В путь", for: .normal)
                 superClean()
             }
         } else {
@@ -75,8 +90,11 @@ extension ViewController {
         transportTypeButton.addGestureRecognizer(gesture)
         gesture.minimumPressDuration = 0
     }
+    
     @objc private func tapTransportType(gesture: UILongPressGestureRecognizer) {
+        
         if gesture.state == .began {
+            vibrateWhenButtonTapped()
             transportTypeButton.alpha = 1.0
             let chooseTransportTypeVC = TransportTypeViewController()
             chooseTransportTypeVC.completion = { [weak self] type in
@@ -98,6 +116,26 @@ extension ViewController {
                     completion: nil)
         } else {
             transportTypeButton.alpha = 0.5
+        }
+    }
+    
+    func setGestureSubwayButtonPolitics() {
+        let gesture = UILongPressGestureRecognizer(target: self,
+                                                   action: #selector(openSubwayMap))
+        subwayButton.addGestureRecognizer(gesture)
+        gesture.minimumPressDuration = 0
+    }
+    
+    @objc private func openSubwayMap(gesture: UILongPressGestureRecognizer) {
+        
+        if gesture.state == .began {
+            vibrateWhenButtonTapped()
+            subwayButton.alpha = 1.0
+        } else {
+            guard
+                let url = URL(string: "https://yandex.ru/metro/moscow?focus=0&scheme_id=sc34974011") else { return }
+            UIApplication.shared.open(url)
+            subwayButton.alpha = 0.5
         }
     }
 }

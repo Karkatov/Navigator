@@ -11,20 +11,25 @@ final class TransportTypeViewController: UIViewController {
                      for: .normal)
         btn.addTarget(self,
                       action: #selector(setWalking), for: .touchUpInside)
+        btn.tintColor = .black
         return btn
     }()
+    
     @objc private func setWalking() {
         completion?(MKDirectionsTransportType.walking)
         dismiss(animated: true, completion: nil)
     }
+    
     private let setCarTypeButton: UIButton = {
         let btn = UIButton()
         btn.setImage(UIImage(systemName: "car.fill"),
                      for: .normal)
         btn.addTarget(self,
                       action: #selector(setCar), for: .touchUpInside)
+        btn.tintColor = .black
         return btn
     }()
+    
     @objc private func setCar() {
         completion?(MKDirectionsTransportType.automobile)
         dismiss(animated: true, completion: nil)
@@ -35,7 +40,7 @@ final class TransportTypeViewController: UIViewController {
         stack.axis = .horizontal
         stack.distribution = .fillEqually
         stack.alignment = .fill
-        stack.backgroundColor = .clear
+        stack.backgroundColor = .systemPurple
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.layer.borderColor = UIColor.black.cgColor
         stack.layer.cornerRadius = 8

@@ -6,6 +6,20 @@ import AVFoundation
 
 extension ViewController {
     
+    func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        for subview in view.subviews where subview != searchBar {
+            subview.isUserInteractionEnabled = false
+        }
+        return true 
+    }
+    
+    func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
+        for subview in view.subviews where subview != searchBar {
+            subview.isUserInteractionEnabled = true
+        }
+        return true
+    }
+    
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text?.removeAll()
         searchBar.endEditing(true)
@@ -20,7 +34,15 @@ extension ViewController {
         loading.startAnimating()
         stepCounter = 0
     }
+    
     func superClean() {
+        
+        clean()
+        stepCounter = 0
+        steps.removeAll()
+        shortestPath = nil
+        ridingStatus = false
+        
         UIView.animate(withDuration: 2.0,
                        animations: { [weak self] in
             self?.directionLabel.isHidden = true
@@ -28,19 +50,14 @@ extension ViewController {
             self?.remainedDistance.isHidden = true
             self?.goButton.isHidden = true
         })
-        stepCounter = 0
+        
         _ = locationManager.monitoredRegions.map{
             locationManager.stopMonitoring(for: $0)
         }
-        let location = mapView.userLocation.coordinate
-        mapView.centerToLocation(center: location)
-        steps.removeAll()
-        ridingStatus = false
+        
         if synthesizer.isSpeaking {
             synthesizer.stopSpeaking(at: AVSpeechBoundary.word)
         }
-        shortestPath = nil
-        clean()
     }
     
     func clean() {
@@ -80,21 +97,19 @@ extension ViewController {
     }
     
     func showPath(destinationCoordinate: CLLocationCoordinate2D, transportType: MKDirectionsTransportType) {
-        let sourceCoordinate = mapView.userLocation.coordinate
         
+        guard
+            let sourceCoordinate = locationManager.location?.coordinate
+        else { return }
         let sourcePlacemark = MKPlacemark(coordinate: sourceCoordinate)
         let destinationPlacemark = MKPlacemark(coordinate: destinationCoordinate)
-        
         let sourceItem = MKMapItem(placemark: sourcePlacemark)
         let destinationItem = MKMapItem(placemark: destinationPlacemark)
-        
         let destinationRequest = MKDirections.Request()
         destinationRequest.source = sourceItem
         destinationRequest.destination = destinationItem
-        
         destinationRequest.transportType = transportType
         destinationRequest.requestsAlternateRoutes = true
-        
         let directions = MKDirections(request: destinationRequest)
         directions.calculate { [weak self] response, error in
             guard
@@ -110,6 +125,7 @@ extension ViewController {
                 let shortestRoute = response.routes
                     .sorted(by: {$0.distance < $1.distance})
                     .first else { return }
+            self?.shortestPath = shortestRoute
             
             let distance = shortestRoute.distance
             var distanceToDisplay = ""
@@ -127,7 +143,6 @@ extension ViewController {
             } else {
                 timeToDisplay = "\(String(time/60/60).customRound()) ч"
             }
-            
             self?.remainedDistance.text = "Расстояние: \(distanceToDisplay)"
             self?.remainedTime.text = "До прибытия: \(timeToDisplay)"
             
@@ -137,18 +152,21 @@ extension ViewController {
                 self?.remainedTime.isHidden = false
             })
             let insets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-            self?.mapView.addOverlay(shortestRoute.polyline)
-            self?.mapView.setVisibleMapRect(shortestRoute.polyline.boundingMapRect,
+            
+            guard
+                let shortestPath = self?.shortestPath else { return }
+            
+            self?.mapView.addOverlay(shortestPath.polyline)
+            self?.mapView.setVisibleMapRect(shortestPath.polyline.boundingMapRect,
                                             edgePadding: insets,
                                             animated: true)
             self?.loading.stopAnimating()
             self?.goButton.isHidden = false
-            self?.shortestPath = shortestRoute
         }
     }
     
     func getRouteSteps(route: MKRoute) {
-        _ = locationManager.monitoredRegions.map{
+        _ = locationManager.monitoredRegions.map {
             locationManager.stopMonitoring(for: $0)
         }
         steps = route.steps
@@ -174,6 +192,63 @@ extension ViewController {
         }
     }
     
+    func calculateRemainedTimeDistanceAndRedrawRoute(source location: CLLocationCoordinate2D) {
+        
+        let sourceCoordinate = location
+        let sourcePlacemark = MKPlacemark(coordinate: sourceCoordinate)
+        let destinationPlacemark = MKPlacemark(coordinate: destinationLocation)
+        let sourceItem = MKMapItem(placemark: sourcePlacemark)
+        let destinationItem = MKMapItem(placemark: destinationPlacemark)
+        let destinationRequest = MKDirections.Request()
+        destinationRequest.source = sourceItem
+        destinationRequest.destination = destinationItem
+        destinationRequest.transportType = transportType
+        destinationRequest.requestsAlternateRoutes = true
+        let directions = MKDirections(request: destinationRequest)
+        directions.calculate { [weak self] response, error in
+            
+            guard
+                let response = response,
+                let oldOverLays = self?.mapView.overlays,
+                let shortestRoute = response.routes
+                    .sorted(by: {$0.distance < $1.distance})
+                    .first else { return }
+            self?.shortestPath = shortestRoute
+            
+            let distance = shortestRoute.distance
+            var distanceToDisplay = ""
+            if distance < 1000 {
+                distanceToDisplay = String(distance).customRound() + " м"
+            } else if distance < 30 {
+                let message = "С прибытием, вы на месте"
+                self?.speak(string: message)
+                self?.directionLabel.text = message
+            } else if distance < 10 {
+                self?.superClean()
+            } else {
+                distanceToDisplay = String(distance/1000).customRound() + " км"
+            }
+            
+            
+            let time = shortestRoute.expectedTravelTime
+            var timeToDisplay = ""
+            
+            if time < 3600 {
+                timeToDisplay = "\(String(time/60).customRound()) мин"
+            } else {
+                timeToDisplay = "\(String(time/60/60).customRound()) ч"
+            }
+            self?.remainedDistance.text = "Расстояние: \(distanceToDisplay)"
+            self?.remainedTime.text = "До прибытия: \(timeToDisplay)"
+            
+            // MARK: Redraw the route
+            self?.mapView.removeOverlays(oldOverLays)
+            guard
+                let shortestPath = self?.shortestPath else { return }
+            self?.mapView.addOverlay(shortestPath.polyline)
+        }
+    }
+    
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let render = MKPolylineRenderer(overlay: overlay as! MKPolyline)
         render.strokeColor = .systemRed
@@ -184,7 +259,7 @@ extension ViewController {
         let speechUtterance = AVSpeechUtterance(string: string)
         if !synthesizer.isSpeaking {
             synthesizer.speak(speechUtterance)
-        } 
+        }
     }
 }
 
@@ -198,6 +273,7 @@ extension String {
         result.removeSubrange(result.index(after: index)..<result.endIndex)
         return result
     }
+    
     func customRoundNoDots() -> String {
         var result = self
         guard

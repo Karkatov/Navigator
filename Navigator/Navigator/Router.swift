@@ -10,7 +10,6 @@ protocol UserRouter {
 }
 
 final class Router: UserRouter {
-    
     var entry: EntryPoint?
     
     static func start() -> UserRouter {

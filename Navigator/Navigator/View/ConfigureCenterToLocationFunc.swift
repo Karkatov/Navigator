@@ -11,10 +11,6 @@ extension MKMapView {
                                                   latitudinalMeters: regionRadius,
                                                   longitudinalMeters: regionRadius)
         setRegion(coordinateRegion, animated: true)
-        if userTrackingMode == .followWithHeading {
-            userTrackingMode = .follow
-        } else {
-            userTrackingMode = .followWithHeading
-        }
+        userTrackingMode = .follow
     }
 }
