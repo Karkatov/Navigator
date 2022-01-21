@@ -31,7 +31,7 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
         let lbl = UILabel()
         lbl.text = "Start monitoring..."
         lbl.backgroundColor = .clear
-        lbl.textColor = .white.withAlphaComponent(0.5)
+        lbl.textColor = .label.withAlphaComponent(0.5)
         lbl.numberOfLines = 0
         lbl.font = .systemFont(ofSize: 15, weight: .bold)
         lbl.adjustsFontSizeToFitWidth = true
@@ -43,9 +43,9 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
         let lbl = UILabel()
         lbl.text = "0 км/ч"
         lbl.backgroundColor = .clear
-        lbl.textColor = .white.withAlphaComponent(0.5)
+        lbl.textColor = .label.withAlphaComponent(0.5)
         lbl.numberOfLines = 1
-        lbl.font = .systemFont(ofSize: 80, weight: .light)
+        lbl.font = .systemFont(ofSize: 80, weight: .bold)
         lbl.adjustsFontSizeToFitWidth = true
         lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
@@ -54,24 +54,26 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
     let loading: UIActivityIndicatorView = {
         let loading = UIActivityIndicatorView()
         loading.hidesWhenStopped = true
-        loading.style = .white
+        loading.style = .whiteLarge
         return loading
     }()
     
     let remainedTime: UILabel = {
         let lbl = UILabel()
-        lbl.textColor = .label
+        lbl.textColor = .label.withAlphaComponent(0.5)
         lbl.adjustsFontSizeToFitWidth = true
-        lbl.backgroundColor = .white.withAlphaComponent(0.5)
+        lbl.font = .systemFont(ofSize: 15, weight: .bold)
+        lbl.backgroundColor = .clear
         lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
     }()
     
     let remainedDistance: UILabel = {
         let lbl = UILabel()
-        lbl.textColor = .label
+        lbl.font = .systemFont(ofSize: 15, weight: .bold)
+        lbl.textColor = .label.withAlphaComponent(0.5)
         lbl.adjustsFontSizeToFitWidth = true
-        lbl.backgroundColor = .white.withAlphaComponent(0.5)
+        lbl.backgroundColor = .clear
         lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
     }()
@@ -87,10 +89,11 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
     
     let directionLabel: UILabel = {
         let lbl = UILabel()
-        lbl.textColor = .label
+        lbl.textColor = .label.withAlphaComponent(0.5)
         lbl.numberOfLines = 0
         lbl.adjustsFontSizeToFitWidth = true
-        lbl.backgroundColor = .white.withAlphaComponent(0.5)
+        lbl.backgroundColor = .clear
+        lbl.font = .systemFont(ofSize: 15, weight: .bold)
         return lbl
     }()
     
@@ -105,7 +108,8 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
     
     let goButton: UIButton = {
         let btn = UIButton()
-        btn.backgroundColor = .red.withAlphaComponent(0.5)
+        btn.backgroundColor = .red
+        btn.alpha = 0.5
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setTitle("В путь",
                      for: .normal)
@@ -124,8 +128,8 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
     
     let mapKindButton: UIButton = {
         let btn = UIButton()
-        btn.backgroundColor = .white
         btn.alpha = 0.5
+        btn.backgroundColor = .label
         btn.setImage(UIImage(systemName: "map.fill"),
                      for: .normal)
         btn.translatesAutoresizingMaskIntoConstraints = false
@@ -134,8 +138,8 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
     
     let transportTypeButton: UIButton = {
         let btn = UIButton()
-        btn.backgroundColor = .white
         btn.alpha = 0.5
+        btn.backgroundColor = .label
         btn.setImage(UIImage(systemName: "car.fill"),
                      for: .normal)
         btn.translatesAutoresizingMaskIntoConstraints = false
@@ -144,8 +148,8 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
     
     let subwayButton: UIButton = {
         let btn = UIButton()
-        btn.backgroundColor = .white
         btn.alpha = 0.5
+        btn.backgroundColor = .label
         btn.setImage(UIImage(systemName: "tram.fill.tunnel"),
                      for: .normal)
         btn.translatesAutoresizingMaskIntoConstraints = false
@@ -173,7 +177,7 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
     
     let locationButton: UIButton = {
         let btn = UIButton()
-        btn.backgroundColor = .white
+        btn.backgroundColor = .label
         btn.alpha = 0.5
         btn.setImage(UIImage(systemName: "location.north.fill"),
                      for: .normal)

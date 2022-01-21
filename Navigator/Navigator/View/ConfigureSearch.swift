@@ -35,7 +35,6 @@ extension ViewController {
     }
     
     func superClean() {
-        
         stepCounter = 0
         steps.removeAll()
         shortestPath = nil
@@ -176,6 +175,9 @@ extension ViewController {
             self?.directionLabel.isHidden = false
         })
         speak(string: initialMessage)
+        guard
+            let userLocation = locationManager.location?.coordinate else { return }
+        mapView.centerToLocation(center: userLocation)
     }
     
     func calculateRemainedTimeDistanceAndRedrawRoute() {

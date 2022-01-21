@@ -28,12 +28,11 @@ extension ViewController {
     }
     
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
-        
+        stepCounter += 1
         if stepCounter < steps.count {
             let message = "Через \(String(steps[stepCounter].distance).customRoundNoDots()) метров \(steps[stepCounter].instructions)"
             speak(string: message)
             directionLabel.text = message
-            stepCounter += 1
         } else {
             let message = "С прибытием, вы на месте"
             speak(string: message)
