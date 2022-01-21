@@ -10,7 +10,7 @@ protocol UserView {
     func updateView()
 }
 
-final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLocationManagerDelegate, UISearchBarDelegate {
+final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLocationManagerDelegate, UISearchBarDelegate, AVSpeechSynthesizerDelegate {
         
     var presenter: UserPresenter?
     var stepCounter = 0 
@@ -211,6 +211,7 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
         directionLabelStackView.addArrangedSubview(directionLabel)
         view.addSubview(remainedDistanceAndTimeStackView)
         view.addSubview(directionLabelStackView)
+        synthesizer.delegate = self
         mapView.delegate = self
         searchField.delegate = self
         locationManager.delegate = self
@@ -228,6 +229,13 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
         self.navigationController?.navigationBar.isHidden = true
         setConstraints()
         loading.center = view.center
+    }
+    
+    func speechSynthesizer(_ synthesizer: AVSpeechSynthesizer, didFinish utterance: AVSpeechUtterance) {
+        guard
+            !synthesizer.isSpeaking else { return }
+        let audioSession = AVAudioSession.sharedInstance()
+        try? audioSession.setActive(false, options: .notifyOthersOnDeactivation)
     }
 }
 
