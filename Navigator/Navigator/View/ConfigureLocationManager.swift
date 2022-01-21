@@ -8,7 +8,7 @@ extension ViewController {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
-        if let userCurrentLocation = locations.last?.coordinate,
+        if let userCurrentLocation = manager.location?.coordinate,
            let userSpeed = manager.location?.speed {
             // MARK: Real - time coordinates testing
             self.currentCoordinatesLabel.text = "Current longitude: \(String(describing: userCurrentLocation.longitude))\n\n Current latitude: \(String(describing: userCurrentLocation.latitude))"
@@ -16,13 +16,10 @@ extension ViewController {
                 self.currentSpeedLabel.text = String(userSpeed * 3.6).customRound() + " км/ч"
             }
             if ridingStatus {
-                locationManager.distanceFilter = kCLDistanceFilterNone
                 mapView.centerToLocation(center: userCurrentLocation)
                 // MARK: Let's update remained time, distance and redraw the path
-                calculateRemainedTimeDistanceAndRedrawRoute(source: userCurrentLocation)
-            } else {
-                locationManager.distanceFilter = 10
-            }
+                calculateRemainedTimeDistanceAndRedrawRoute()
+            } 
         }
     }
     
@@ -33,11 +30,14 @@ extension ViewController {
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
         
         if stepCounter < steps.count {
-            
             let message = "Через \(String(steps[stepCounter].distance).customRoundNoDots()) метров \(steps[stepCounter].instructions)"
             speak(string: message)
             directionLabel.text = message
-            stepCounter += 1   
+            stepCounter += 1
+        } else {
+            let message = "С прибытием, вы на месте"
+            speak(string: message)
+            directionLabel.text = message
         }
     }
 }

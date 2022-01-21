@@ -154,7 +154,8 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
     
     let locationManager: CLLocationManager = {
         let loc = CLLocationManager()
-        loc.desiredAccuracy = kCLLocationAccuracyBestForNavigation        
+        loc.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+        loc.distanceFilter = 5
         loc.startUpdatingLocation()
         return loc
     }()
@@ -166,7 +167,7 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
         map.showsTraffic = true
         map.showsScale = true
         map.showsBuildings = true
-        map.mapType = .hybridFlyover
+        map.mapType = .standard
         return map
     }()
     
