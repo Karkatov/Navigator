@@ -69,7 +69,7 @@ extension ViewController {
 
         if gesture.state == .began {
             vibrateWhenButtonTapped()
-            goButton.backgroundColor = .red.withAlphaComponent(1.0)
+            goButton.alpha = 1
             
             if ridingStatus == false {
                 if let unwrapped = shortestPath {
@@ -80,7 +80,7 @@ extension ViewController {
                 superClean()
             }
         } else {
-            goButton.backgroundColor = .red.withAlphaComponent(0.5)
+            goButton.alpha = 0.5
         }
     }
     

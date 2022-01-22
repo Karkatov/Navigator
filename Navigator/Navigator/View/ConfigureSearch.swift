@@ -7,6 +7,11 @@ import AVFoundation
 extension ViewController {
     
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
+        UIView.animate(withDuration: 1.0,
+                       animations: {
+            self.mapView.alpha = 0.5
+        })
+        
         for subview in view.subviews where subview != searchBar {
             subview.isUserInteractionEnabled = false
         }
@@ -14,6 +19,10 @@ extension ViewController {
     }
     
     func searchBarShouldEndEditing(_ searchBar: UISearchBar) -> Bool {
+        UIView.animate(withDuration: 1.0,
+                       animations: {
+            self.mapView.alpha = 1
+        })
         for subview in view.subviews where subview != searchBar {
             subview.isUserInteractionEnabled = true
         }
@@ -23,8 +32,9 @@ extension ViewController {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         searchBar.text?.removeAll()
         searchBar.endEditing(true)
-        superClean()
-        loading.stopAnimating()
+        if !remainedTime.isHidden {
+            superClean()
+        }
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
@@ -57,7 +67,6 @@ extension ViewController {
         _ = locationManager.monitoredRegions.map{
             locationManager.stopMonitoring(for: $0)
         }
-        
         if synthesizer.isSpeaking {
             synthesizer.stopSpeaking(at: AVSpeechBoundary.word)
         }

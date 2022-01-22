@@ -10,14 +10,14 @@ extension ViewController {
         
         if let userCurrentLocation = manager.location?.coordinate,
            let userSpeed = manager.location?.speed {
-            // MARK: Real - time coordinates testing
+            // MARK: Real - time coordinates updating
             self.currentCoordinatesLabel.text = "Current longitude: \(String(describing: userCurrentLocation.longitude))\n\n Current latitude: \(String(describing: userCurrentLocation.latitude))"
             if userSpeed > 0 {
                 self.currentSpeedLabel.text = String(userSpeed * 3.6).customRound() + " км/ч"
             }
             if ridingStatus {
                 mapView.centerToLocation(center: userCurrentLocation)
-                // MARK: Let's update remained time, distance and redraw the path
+                // MARK: Let's update remained time, distance and redraw the route
                 calculateRemainedTimeDistanceAndRedrawRoute()
             } 
         }
