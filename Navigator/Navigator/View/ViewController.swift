@@ -120,9 +120,12 @@ final class ViewController: UIViewController, UserView, MKMapViewDelegate, CLLoc
         let search = UISearchBar()
         search.placeholder = "Search for..."
         search.translatesAutoresizingMaskIntoConstraints = false
-        search.tintColor = .white
+        search.tintColor = .label
         search.showsCancelButton = true
         search.searchBarStyle = .minimal
+        search.autocorrectionType = .yes
+        search.spellCheckingType = .yes
+        search.keyboardAppearance = .dark
         return search
     }()
     
